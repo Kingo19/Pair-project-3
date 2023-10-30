@@ -6,15 +6,12 @@ import com.techelevator.model.CatFact;
 import com.techelevator.model.CatPic;
 import com.techelevator.services.CatFactService;
 import com.techelevator.services.CatPicService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping ("/api/cards/")
+@RequestMapping ("/api/cards")
 public class CatController {
 
     private CatCardDao catCardDao;
@@ -47,6 +44,23 @@ public class CatController {
         return catCard;
     }
 
+    @PostMapping
+    public CatCard saveCatCard(@RequestBody CatCard catCard) {
+        return catCardDao.createCatCard(catCard);
+    }
+
+    @PutMapping("/{id}")
+    public CatCard updateCatCard(@PathVariable int id, @RequestBody CatCard catCard) {
+        catCard.setCatCardId(id);
+        CatCard updatedCatCard = catCardDao.updateCatCard(catCard);
+        return updatedCatCard;
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteCatCard(@PathVariable int id) {
+        catCardDao.deleteCatCardById(id);
+        return "A " + id + " Cat Card was successfully deleted.";
+    }
 
 
 }
